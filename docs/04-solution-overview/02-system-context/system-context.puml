@@ -1,0 +1,4 @@
+@startuml system-context
+!include external-system-context.puml
+!include people-system-context.puml
+@enduml

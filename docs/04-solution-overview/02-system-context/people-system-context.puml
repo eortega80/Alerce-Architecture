@@ -1,0 +1,80 @@
+@startuml people-system-context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LEFT_RIGHT()
+
+System(tms, "Alertran", "Transportation management system")
+
+System(atc,"ATC", "Customer Service")
+System_Ext(gts, "GTS", "Client and collaborator application.")
+
+System(diana, "Diana", "Mobile application for devices. IT certifies the pickup/delivery with evidences (GPS, Photography...).")
+Rel(diana, tms, "Fetches information")
+Rel(tms, diana, "Gives upcoming Delivery details")
+
+System_Ext(sedon, "SEDON", "Provides document digitilization")
+Rel(sedon,tms,"Provides information about scanned packages")
+
+Person(deliveryAgent, "Delivery Agent", "Delivers packages.")
+Rel(deliveryAgent, diana, "Loads worklist for the day and gets addresses for deliveries")
+Rel(diana, deliveryAgent, "Assigns the agent to a delivery")
+Rel(deliveryAgent, diana, "Closes delivery process")
+Rel(tms,deliveryAgent,"Sends Alert")
+
+Person(pickupAgent, "Pickup Agent", "Picks up packages.")
+Rel(pickupAgent, diana, "Loads worklist for the day and gets addresses for pickups")
+Rel(diana, pickupAgent, "Assigns the agent to a pickup")
+Rel(pickupAgent, diana, "Closes pickup process")
+Rel(tms,pickupAgent,"Sends Alert")
+
+Person(warehouseAgent, "Warehouse Agent", "Handles warehouse packages.")
+Rel(warehouseAgent, tms, "Scans packages in and out")
+Rel(tms,warehouseAgent,"Sends Alert")
+
+Person_Ext(consignee, "Consignee","Receives packages.")
+Rel(deliveryAgent, consignee, "Delivers package")
+Rel(tms,consignee,"Sends Alert")
+Rel(tms, consignee, "Sends SMS/Email with updates")
+Rel(tms, consignee, "Applies corresponding charges")
+Rel(consignee, atc, "Contacts Customer Service (ATC) for problems with delivery")
+Rel(consignee,gts,"Check status of package (with personalized link in consignee wants to reschedule)")
+
+
+Rel(atc,tms,"Communicates requests/incidents")
+
+Person_Ext(orderingClient, "Ordering client","Sends packages.")
+Rel(orderingClient,atc, "Makes a request for delivery/pickup")
+Rel(tms, orderingClient, "Applies corresponding charges")
+Rel(tms,orderingClient, "Sends personalized link to check on package updates")
+Rel(tms,orderingClient,"Sends Alert")
+Rel(orderingClient,gts,"Check status of package")
+
+Person(commercialPerson,"Commercial Person","Offers transport services")
+Rel(commercialPerson,tms,"Manages rates and new customers")
+
+Person(commercialDirector, "Commercial Director","Manages commercial team")
+Rel(commercialDirector, tms, "Checks on sale rates per customer")
+
+Person(delegationManager,"Delegation Manager", "Supervises within the delegation")
+Rel(delegationManager,tms,"Supervises the delivery efficiency, billing(to client and provider) and service quality. He also supervise rates and manage with delivery providers price.")
+
+Person(admistrativeResponsible, "Administrative Responsible", "Handles administrative tasks")
+Rel(admistrativeResponsible, tms,"Registers deliveries, invoices and accounting-related activities")
+
+Person(customerService, "Customer Service Representative","Handles final client requests through a call center")
+Rel(customerService,tms,"Register client requests and incidents")
+
+Person(operativeResponsible,"Operative Responsible", "Handles operative tasks")
+Rel(operativeResponsible,tms,"Creates delivery routes and Work orders")
+
+Person(it,"IT Responsible","Handles IT-related tasks")
+Rel(it,tms,"Manage profiles/roles and global data")
+
+Person(generalManager,"General Manager","New user of application")
+Rel(generalManager,tms,"Checks overall status of deliveries/pickups")
+
+Person_Ext(scanningOperator, "Scanning Operator", "Scans packages")
+Rel(scanningOperator, sedon,"Registers informartion of scanned packages")
+
+@enduml

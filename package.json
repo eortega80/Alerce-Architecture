@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "mkdocs build",
+    "start": "mkdocs serve",
+    "build-css": "cd design && npm run build",
+    "build-css-compressed": "cd design && npm run build-compressed",
+    "deploy": "mkdocs gh-deploy --force --remote-branch gh-pages"
+  }
+}

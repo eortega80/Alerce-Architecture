@@ -1,0 +1,83 @@
+site_name: ALERTRAN COMET Solution Architecture
+repo_url: https://github.ibm.com/massimo-caprinali/alerce-aletran-docs
+theme:
+  name: material #alternatives: gitbook, bootstrap4, rtd-dropdown
+  custom_dir: overrides
+  logo: 'images/ibm-cloud-logo.png'
+  last_update_badge: 'last-update.svg'
+  font:
+    text: IBM Plex Sans
+  palette:
+    - scheme: default
+      primary: black
+extra_css: ["extra.css"]
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.details
+  - attr_list
+  - abbr
+  - pymdownx.snippets
+plugins:
+    - search
+    #- git-revision-date-localized:
+    #   time_zone: Europe/Madrid
+    #   locale: en
+    #   fallback_to_build_date: false
+    #- mermaid2
+    #- drawio-exporter:
+        # Diagrams are cached to speed up site generation. The default path is
+        # drawio-exporter, relative to the documentation directory.
+    #    cache_dir: 'drawio-exporter'
+        # Path to the Draw.io executable:
+        #   * drawio on Linux
+        #   * draw.io on macOS
+        #   * or draw.io.exe on Windows
+        # We'll look for it on your system's PATH, then default installation
+        # paths. If we can't find it we'll warn you.
+    #    drawio_executable: null
+        # Additional Draw.io CLI args
+    #    drawio_args: []
+        # Output format (see draw.io --help | grep format)
+    #    format: svg
+        # Glob pattern for matching source files
+    #    sources: '*.drawio'
+    - mkpdfs:
+        company: IBM
+        author: IBM Garage
+        toc_title: Table of contents
+        toc_level: 2
+        output_path: "pdf/Solution Architecture Document.pdf"
+        design: design/report.css
+nav:
+  - 1. Introduction: 
+    - 1.1 Context: 01-intro/01-context.md
+    - 1.2 Acronyms definition: 01-intro/02-acronyms.md
+    - 1.3 Systems description: 01-intro/03-systems-description.md
+
+  - 2. Current Architecture:
+    - 2.1 Multi-region data centers: 02-current-arch/01-multi-region-dc.md
+    - 2.2 Infrastructure/Architecture: 02-current-arch/02-infrastructure-architecture.md
+    - 2.3 Application/Architecture: 02-current-arch/03-application-architecture.md
+
+  - 3. Transformation advisor:
+    - 3.1 TMS: 03-transformation-advisor/tms.md
+    - 3.2 TMS EE6: 03-transformation-advisor/tms-ee6.md
+
+  - 4. Target solution:
+    - 4.1 Solution Objectives: 04-solution-overview/01-objectives/objectives.md
+    - 4.2 System Context: 04-solution-overview/02-system-context/system-context.md
+    - 4.3 Architectural Principles: 04-solution-overview/03-arch-principles/arch-principles.md
+    - 4.4 Architectural Decisions: 04-solution-overview/04-arch-decisions/arch-decisions.md
+    - 4.5 Recommended Technology Stack: 04-solution-overview/05-tech-stack/tech-stack.md
+    - 4.6 System View: 04-solution-overview/06-system-view-to-be/system-view-to-be.md
+    - 4.7 Operational Model: 04-solution-overview/07-operational-model/operational-model.md
+    - 4.8 Automation practices and tools: 04-solution-overview/08-automation/automation.md
+    - 4.9 Database type recommendations: 04-solution-overview/09-data/data.md
+    - 4.10 MVP Low Level Design: 04-solution-overview/10-mvp-low-level-design/mvp-low-level-design.md
+
+  - 5. Security considerations:
+    - 5.1 Best practices: 05-security/best-practices.md

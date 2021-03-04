@@ -1,0 +1,32 @@
+@startuml mvp-system-context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LEFT_RIGHT()
+
+System(delivery, "Delivery System", "Module specific to the Delivery system")
+
+System_Ext(diana, "Diana", "Mobile application for devices. IT certifies the delivery with evidences (GPS, Photography...).")
+Rel(diana, delivery, "Fetches information")
+Rel(delivery, diana, "Gives upcoming Delivery details")
+Rel(diana, delivery, "Releases a pre-delivery notice or states that there is an incident related to a delivery")
+
+System_Ext(senda, "Senda", "Route Optimizer")
+Rel(senda, delivery, "Fetches information")
+Rel(delivery, senda, "Gives upcoming Delivery details")
+Rel(senda,delivery,"Sends optimized routes and assigns a delivery agent for package delivery")
+
+Person_Ext(deliveryAgent, "Delivery Agent", "Delivers packages.")
+Rel(deliveryAgent, delivery, "Accepts work orders, fills the truck with corresponding packages and sets work orders as ready for delivery")
+
+
+Person_Ext(consignee, "Consignee","Receives packages.")
+Rel(deliveryAgent, consignee, "Delivers package")
+
+Person_Ext(orderingClient, "Ordering client","Makes delivery orders.")
+Rel(delivery,orderingClient, "Sends or cancels packages.")
+
+Person(operativeResponsible,"Operative Responsible", "Handles operative tasks")
+Rel(operativeResponsible,delivery,"Creates delivery routes, manages (create, set as ready for delivery or close) Work Orders, and sets incidents or pre-delivery notices for deliveries")
+Rel(operativeResponsible,deliveryAgent,"Assigns delivery agents to work orders")
+@enduml

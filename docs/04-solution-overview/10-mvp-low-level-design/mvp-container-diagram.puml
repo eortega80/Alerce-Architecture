@@ -1,0 +1,56 @@
+@startuml mvp-container-diagram
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LEFT_RIGHT()
+
+System_Boundary(c2, "External Systems") {
+    System_Ext(payments, "Payment system","Defines payments to be handled")
+    System_Ext(refunds, "Refunds system","Defines refunds to be handled")
+    System_Ext(returns, "Package returns system","Defines package returns to be handled")
+    System_Ext(destructions, "Package destruction system","Defines package destruction to handled")
+    System_Ext(deliveryAgents, "Delivery Agents system","Defines delivery agents for work orders")
+    System_Ext(truck, "Trucks system","Defines trucks for work orders")
+    System_Ext(route, "Routing system","Defines routes for work orders")
+    System_Ext(diana, "Diana", "Mobile application for devices. IT certifies the delivery with evidences (GPS, Photography...).")
+    System_Ext(senda, "Senda", "Route Optimizer")
+}
+
+System_Boundary(c1, "Delivery System Solution") {
+    Container(spa, "Single-page application", "Javascript, React","Provides all delivery functionality to users via a web application")
+    Container(apiApplication,"API Application","Java", "Provides deliveries functionality via API")
+    Container(messageBus, "Event Backbone", "Kafka", "Transport for events")
+    ContainerDb(database, "Relational or NoSQL Database", "(PostgreSQL, MongoDB)", "Stores data related to deliveries")
+    Container(apiConnect, "API Gateway","DataPower Gateway", "API platform for API management")
+}
+
+System_Boundary(c3, "Actors") {
+    Person(orderingClient, "Ordering client","Makes delivery orders.")
+    Person(deliveryAgent, "Delivery Agent", "Delivers packages.")
+    Person(operativeResponsible,"Operative Responsible", "Handles operative tasks")
+}
+
+Rel(c3, c2, "Interacts with other systems")
+
+
+Rel(spa, apiApplication, "Makes API calls to")
+
+Rel(apiApplication, messageBus, "Publishes events")
+Rel(messageBus, apiApplication, "Subscribes to event streams")
+Rel(apiApplication, database, "Reads from and writes to")
+
+
+Rel(apiApplication, apiConnect, "Exposes APIs")
+
+Rel(orderingClient,spa, "Makes orders")
+
+
+Rel(deliveryAgent, spa, "Sets work orders as ready for delivery")
+Rel(deliveryAgent, spa, "Sets work orders as ready for delivery")
+
+Rel(operativeResponsible,spa,"Creates delivery routes, manages (create, set as ready for delivery or close) Work Orders, and sets incidents or pre-delivery notices for deliveries")
+Rel(operativeResponsible,spa,"Creates delivery routes, manages (create, set as ready for delivery or close) Work Orders, and sets incidents or pre-delivery notices for deliveries")
+
+Rel(c2, apiConnect, "Communicates with Delivery System Solution")
+
+@enduml

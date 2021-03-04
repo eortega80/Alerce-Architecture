@@ -1,0 +1,71 @@
+@startuml external-system-context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+' LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+LAYOUT_LEFT_RIGHT()
+
+System(tms, "Alertran", "Transportation management system")
+
+System_Boundary(c1, "Inputs") {
+    System_Ext(ktyan, "KTYAN", "File Mapper")
+    System_Ext(apis, "APIs")
+    System_Ext(excelSheet, "Excel Sheet")
+}
+
+Rel(ktyan, tms, "Sends information about next Deliveries")
+Rel(tms,ktyan,"Fetches information about next Deliveries")
+Rel(apis, tms, "Sends information about next Deliveries")
+Rel(tms,apis,"Make API calls to fetch information about next Deliveries")
+Rel(excelSheet, tms, "Sends information about next Deliveries")
+Rel(tms,excelSheet,"Uploads excel sheets into the application")
+
+
+System_Ext(gts, "GTS", "Client and collaborator application.")
+Rel(tms,gts,"Record and check the state of the deliveries")
+Rel(gts,tms,"Make and print labels")
+
+System_Ext(jqm,"JQM", "Job Scheduler for Asynchronous tasks")
+Rel(jqm,tms,"Schedules jobs for reporting, billing, pricing, etc.")
+Rel(tms, jqm, "Initiates a job")
+
+System_Ext(sorter,"SORTER","BC Scanner.")
+Rel(sorter,tms,"Sorts packages")
+Rel(tms, sorter, "Fetches information about the sorting made")
+
+System(bi,"BI","Business Intelligence Module")
+Rel(tms,bi, "Sends information for Statistics and Data Exploitation")
+Rel(bi, tms, "Fetches information")
+
+System(diana, "Diana", "Mobile application for devices. IT certifies the pickup/delivery with evidences (GPS, Photography...).")
+Rel(diana, tms, "Fetches information")
+Rel(tms, diana, "Gives upcoming Delivery details")
+
+System_Ext(senda, "Senda", "Route Optimizer")
+Rel(senda, tms, "Fetches information")
+Rel(tms, senda, "Gives upcoming Delivery details")
+Rel(senda,tms,"Sends optimized routes for package delivery/pickup")
+
+System_Ext(geo,"Georeferencing", "Georeferencing system")
+Rel(geo,tms,"Provides georeferencing")
+Rel(tms,geo,"Makes APIs calls")
+
+System_Ext(ecommerce,"Ecommerce","Ecommerce systems")
+Rel(ecommerce, tms, "Makes API calls")
+Rel(tms,ecommerce,"Provides needed information")
+
+System_Ext(documents,"Documents","Documents system for custom integrations per clients")
+
+System_Ext(smsprovider, "SMS Provider","Telecommunication provider for SMS communication")
+
+System_Ext(sedon, "SEDON", "Provides document digitilization")
+Rel(sedon,tms,"Provides information about scanned packages")
+Rel(tms, sedon, "Fetches information about scanned packages")
+
+System( arrivals, "Arrivals Module")
+Rel(arrivals, tms, "Sends information about next Deliveries")
+Rel(tms,arrivals,"Fetches information about next Deliveries")
+
+:tms: -up-> (apis)
+
+@enduml

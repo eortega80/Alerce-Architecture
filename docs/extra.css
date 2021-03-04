@@ -1,0 +1,16 @@
+.section ul li {
+  margin-bottom: 10px;
+}
+
+tr td:nth-child(1){
+  background-color: lightgrey !important;
+}
+
+th {
+  min-width: 12rem !important;
+}
+
+.hide-on-pdf:before {
+  content: "HIDDEN ON PDF: ";
+  font-weight: bold;
+}

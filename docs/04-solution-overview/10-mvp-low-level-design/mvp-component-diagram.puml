@@ -1,0 +1,42 @@
+@startuml mvp-component-diagram
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LEFT_RIGHT()
+
+Container(spa, "Single Page Application", "javascript and react", "Provides all delivery functionality to users via a web application")
+
+Container_Boundary(c1, "API Application") {
+    Component(deliveryComponent,"Delivery Component", "MVC Rest Controller","Contains functionality related to delivery microservice")
+    Component(workOrderComponent,"Work Order Component", "MVC Rest Controller","Contains functionality related to work orders microservice")
+    Component(delivererComponent,"Deliverer Component", "MVC Rest Controller","Contains functionality related to deliverer microservice")
+    Component(routeComponent,"Route Component", "MVC Rest Controller","Contains functionality related to route microservice")
+    Component(tuckComponent,"Truck Component", "MVC Rest Controller","Contains functionality related to truck microservice")
+}
+
+Container_Boundary(c2, "Databases") {
+    ComponentDb(deliveryDatabase, "Deliveries Database","Relational Database Schema","Stores data related to deliveries")
+    ComponentDb(workOrderDatabase, "Work Orders Database","Relational Database Schema","Stores data related to work orders")
+    ComponentDb(delivererDatabase, "Deliverer Database","Relational Database Schema","Stores data related to deliverers")
+    ComponentDb(routeDatabase, "Route Database","Relational Database Schema","Stores data related to routes")
+    ComponentDb(truckDatabase, "Truck Database","Relational Database Schema","Stores data related to trucks")
+}
+
+
+Container_Boundary(c3, "Event Backbone") {
+    Component(eventStream,"Event Backbone","Kafka","Manages events among components")
+}
+
+Rel(spa, deliveryComponent, "Uses", "JSON/HTTPS")
+Rel(spa, workOrderComponent, "Uses", "JSON/HTTPS")
+Rel(spa, delivererComponent, "Uses", "JSON/HTTPS")
+Rel(spa, routeComponent, "Uses", "JSON/HTTPS")
+Rel(spa, tuckComponent, "Uses", "JSON/HTTPS")
+Rel(deliveryComponent, deliveryDatabase, "Reads from and writes to", "JDBC")
+Rel(workOrderComponent, workOrderDatabase, "Reads from and writes to", "JDBC")
+Rel(delivererComponent, delivererDatabase, "Reads from and writes to", "JDBC")
+Rel(routeComponent, routeDatabase, "Reads from and writes to", "JDBC")
+Rel(tuckComponent, truckDatabase, "Reads from and writes to", "JDBC")
+
+Rel(c3, c1, "Sends and receive events", "JSON")
+@enduml
